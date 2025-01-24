@@ -321,6 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f0decbad02c91458679128d2bb442f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMobileVersion: 1
   bubblePrefab: {fileID: 1166290881561217150, guid: db5615687350a48a9aed103b75640704, type: 3}
   placeToSpawn: {fileID: 1909123162}
   minStartScale: 0.5

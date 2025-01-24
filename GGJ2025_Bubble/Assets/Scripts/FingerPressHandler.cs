@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class FingerPressHandler : MonoBehaviour
 {
-    private float pressDuration = 0f; // Tracks how long the finger is pressed
-    private bool isPressing = false; // Flag to check if finger is down
+    private float pressDuration; // Tracks how long the finger is pressed
+    private bool isPressing; // Flag to check if finger is down
 
+    [SerializeField] private bool isMobileVersion;
     [SerializeField] private GameObject bubblePrefab;
     [SerializeField] private Transform placeToSpawn;
     [SerializeField] private float minStartScale;
@@ -15,49 +16,75 @@ public class FingerPressHandler : MonoBehaviour
     [SerializeField] private float bubbleSpeed;
     [SerializeField] private float bubbleMaxSize;
 
-    private GameObject currentBubble;
+    private Rigidbody currentBubble;
 
     void Update()
     {
-        // Check if there's at least one touch
-        if (Input.touchCount > 0)
+        if (isMobileVersion)
         {
-            Touch touch = Input.GetTouch(0);
+            // Check if there's at least one touch
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
 
-            // Finger just pressed down
-            if (touch.phase == TouchPhase.Began)
-            {
-                isPressing = true;
-                pressDuration = 0f; // Reset duration
-                CreateNewBubble();
-            }
-            // Finger is being held down
-            else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
-            {
-                if (isPressing)
+                // Finger just pressed down
+                if (touch.phase == TouchPhase.Began)
                 {
-                    pressDuration += Time.deltaTime; // Accumulate time
-                    OnFingerPress();
+                    isPressing = true;
+                    pressDuration = 0f; // Reset duration
+                    CreateNewBubble();
+                }
+                // Finger is being held down
+                else if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
+                {
+                    if (isPressing)
+                    {
+                        pressDuration += Time.deltaTime; // Accumulate time
+                        OnFingerPress();
+                    }
+                }
+                // Finger lifted
+                else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
+                {
+                    if (!isPressing) return;
+
+                    OnFingerReleased();
+                    isPressing = false;
                 }
             }
-            // Finger lifted
-            else if (touch.phase is TouchPhase.Ended or TouchPhase.Canceled)
+            else
             {
-                if (!isPressing) return;
-                
-                OnFingerReleased(pressDuration);
                 isPressing = false;
             }
+            return;
         }
-        else
+
+        //--------------------------------------------------------------------------
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            isPressing = false;
+            if (pressDuration == 0)
+            {
+                CreateNewBubble();
+                pressDuration += Time.deltaTime;
+            }
+        }
+        
+        if (pressDuration > 0)
+        {
+            pressDuration += Time.deltaTime;
+            OnFingerPress();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            OnFingerReleased();
+            pressDuration = 0;
         }
     }
 
     private void CreateNewBubble()
     {
-        currentBubble = Instantiate(bubblePrefab, placeToSpawn.position, Quaternion.identity);
+        currentBubble = Instantiate(bubblePrefab, placeToSpawn.position, Quaternion.identity).GetComponent<Rigidbody>();
         float startingScale = Random.Range(minStartScale, maxStartScale);
         currentBubble.transform.localScale = new Vector3(startingScale, startingScale, startingScale);
     }
@@ -75,10 +102,10 @@ public class FingerPressHandler : MonoBehaviour
     }
     
     // Called when the finger is released
-    private void OnFingerReleased(float duration)
+    private void OnFingerReleased()
     {
         if (currentBubble != null) 
-            currentBubble.GetComponent<Rigidbody>().velocity = new Vector3(0, bubbleSpeed, 0);
+            currentBubble.velocity = new Vector3(0, bubbleSpeed, 0);
         currentBubble = null;
     }
 }
