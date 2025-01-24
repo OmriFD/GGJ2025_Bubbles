@@ -5555,6 +5555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubble
       objectReference: {fileID: 0}
+    - target: {fileID: 1166290881561217150, guid: db5615687350a48a9aed103b75640704, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2682304279889417568, guid: db5615687350a48a9aed103b75640704, type: 3}
       propertyPath: m_LocalScale.x
       value: 3.0850558
