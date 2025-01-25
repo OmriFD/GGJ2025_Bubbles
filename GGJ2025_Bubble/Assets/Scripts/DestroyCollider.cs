@@ -19,7 +19,7 @@ public class DestroyCollider : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Bubble"))
+        if (other.gameObject.CompareTag("Bubble") || other.gameObject.CompareTag("Ring"))
         {
             Destroy(other.gameObject);
         }

@@ -10,8 +10,9 @@ public class RingsSpawner : MonoBehaviour
     [SerializeField] private float maxRingScale;
     [SerializeField] private float minVelocity;
     [SerializeField] private float maxVelocity;
-    [SerializeField] private Transform leftSpawnPos;
-    [SerializeField] private Transform rightSpawnPos;
+    // [SerializeField] private Transform leftSpawnPos;
+    // [SerializeField] private Transform rightSpawnPos;
+    [SerializeField] private bool leftPoint;
 
     [SerializeField] private GameObject ring;
 
@@ -31,18 +32,17 @@ public class RingsSpawner : MonoBehaviour
     {
         if (timeBeforeNextRing < 0)
         {
-            int temp = Random.Range(0, 2);
             currentScale = Random.Range(minRingScale, maxRingScale);
             currentVelocity = Random.Range(minVelocity, maxVelocity);
-            if (temp == 0)
+            if (leftPoint)
             {
-                currentRing = Instantiate(ring, leftSpawnPos.position, Quaternion.identity);
+                currentRing = Instantiate(ring, this.transform.position, Quaternion.identity);
                 currentRing.transform.localScale = new Vector3(currentScale, currentScale, currentScale);
                 currentRing.GetComponent<Rigidbody>().velocity = new Vector3(currentVelocity, 0, 0);
             }
             else
             {
-                currentRing = Instantiate(ring, rightSpawnPos.position, Quaternion.identity);
+                currentRing = Instantiate(ring, this.transform.position, Quaternion.identity);
                 currentRing.transform.localScale = new Vector3(currentScale, currentScale, currentScale);
                 currentRing.GetComponent<Rigidbody>().velocity = new Vector3(-currentVelocity, 0, 0);
             }
