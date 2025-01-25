@@ -26,4 +26,9 @@ public class GeneralHandler : MonoBehaviour
         FindObjectOfType<SoapMeterHandler>().StartGame();
         FindObjectOfType<ScoreHandler>().StartGame();
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
