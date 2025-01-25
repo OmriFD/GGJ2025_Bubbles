@@ -18,6 +18,7 @@ public class FingerPressHandler : MonoBehaviour
     [SerializeField] private float amountToEnlargeBy;
     [SerializeField] private float bubbleSpeed;
     [SerializeField] private float bubbleMaxSize;
+    [SerializeField] private ParticleSystem bubblePopEffect;
 
     [Header("Soap Meter Info")] 
     [SerializeField] private float soapCostPerSecond;
@@ -117,7 +118,9 @@ public class FingerPressHandler : MonoBehaviour
         
         if (currentBubble.transform.localScale.x >= bubbleMaxSize)
         {
-            Destroy(currentBubble.gameObject);
+            currentBubble.GetComponent<MeshRenderer>().enabled = false;
+            currentBubble.GetComponentInChildren<ParticleSystem>().Play();
+            Destroy(currentBubble.gameObject,1.5f);
             currentBubble = null;
             soapMeterHandler.DecreaseSlider(currentSoapCost);
             currentSoapCost = 0;
