@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FingerPressHandler : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class FingerPressHandler : MonoBehaviour
     private bool isPressing; // Flag to check if finger is down
 
     [SerializeField] private bool isMobileVersion;
+    [Header("Bubble Info")]
     [SerializeField] private GameObject bubblePrefab;
     [SerializeField] private Transform placeToSpawn;
     [SerializeField] private float minStartScale;
@@ -16,7 +19,18 @@ public class FingerPressHandler : MonoBehaviour
     [SerializeField] private float bubbleSpeed;
     [SerializeField] private float bubbleMaxSize;
 
+    [Header("Soap Meter Info")] 
+    [SerializeField] private float soapCostPerSecond;
+    [SerializeField] private float startBubbleCost;
+
     private Rigidbody currentBubble;
+    private SoapMeterHandler soapMeterHandler;
+    private float currentSoapCost;
+
+    private void Start()
+    {
+        soapMeterHandler = FindObjectOfType<SoapMeterHandler>();
+    }
 
     void Update()
     {
@@ -87,17 +101,24 @@ public class FingerPressHandler : MonoBehaviour
         currentBubble = Instantiate(bubblePrefab, placeToSpawn.position, Quaternion.identity).GetComponent<Rigidbody>();
         float startingScale = Random.Range(minStartScale, maxStartScale);
         currentBubble.transform.localScale = new Vector3(startingScale, startingScale, startingScale);
+        currentSoapCost = startBubbleCost;
     }
 
     private void OnFingerPress()
     {
         if (currentBubble == null) return;
         
-        currentBubble.transform.localScale += Vector3.one * amountToEnlargeBy;
+        float scaleIncrease = amountToEnlargeBy;
+        currentBubble.transform.localScale += Vector3.one * scaleIncrease;
+
+        currentSoapCost += soapCostPerSecond * Time.deltaTime;
+        
         if (currentBubble.transform.localScale.x >= bubbleMaxSize)
         {
             Destroy(currentBubble.gameObject);
             currentBubble = null;
+            soapMeterHandler.DecreaseSlider(currentSoapCost);
+            currentSoapCost = 0;
         }
     }
     
@@ -107,5 +128,7 @@ public class FingerPressHandler : MonoBehaviour
         if (currentBubble != null) 
             currentBubble.velocity = new Vector3(0, bubbleSpeed, 0);
         currentBubble = null;
+        soapMeterHandler.DecreaseSlider(currentSoapCost);
+        currentSoapCost = 0;
     }
 }
