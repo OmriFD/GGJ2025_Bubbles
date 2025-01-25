@@ -30,27 +30,14 @@ public class FingerPressHandler : MonoBehaviour
     private SoapMeterHandler soapMeterHandler;
     private float currentSoapCost;
 
-    private float timerBetweenBubbles;
-    private bool bubbleIsOut;
-
     private void Start()
     {
-        timerBetweenBubbles = originalTimeBetween;
         soapMeterHandler = FindObjectOfType<SoapMeterHandler>();
     }
 
     void Update()
     {
-        if (bubbleIsOut)
-        {
-            timerBetweenBubbles -= Time.deltaTime;
-            if (timerBetweenBubbles <= 0)
-            {
-                bubbleIsOut = false;
-            }
-        }
-        
-        if(!soapMeterHandler.HasSoap() || bubbleIsOut) return;
+        if(!soapMeterHandler.HasSoap()) return;
 
         if (isMobileVersion)
         {
@@ -153,8 +140,6 @@ public class FingerPressHandler : MonoBehaviour
             currentBubble.velocity = new Vector3(0, bubbleSpeed, 0);
             soapMeterHandler.DecreaseSlider(currentSoapCost);
         }
-        timerBetweenBubbles = originalTimeBetween;
-        bubbleIsOut = true;
         currentBubble = null;
         
         currentSoapCost = 0;
