@@ -134,6 +134,7 @@ public class FingerPressHandler : MonoBehaviour
         
         if (currentBubble.transform.localScale.x >= bubbleMaxSize)
         {
+            currentBubble.gameObject.GetComponent<SphereCollider>().enabled = false;
             currentBubble.GetComponent<MeshRenderer>().enabled = false;
             currentBubble.GetComponentInChildren<ParticleSystem>().Play();
             Destroy(currentBubble.gameObject,1.5f);

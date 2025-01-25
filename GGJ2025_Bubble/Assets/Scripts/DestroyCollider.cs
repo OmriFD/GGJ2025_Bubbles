@@ -27,6 +27,7 @@ public class DestroyCollider : MonoBehaviour
             }
             else
             {
+                other.gameObject.GetComponent<SphereCollider>().enabled = false;
                 other.transform.GetComponent<MeshRenderer>().enabled = false;
                 other.transform.GetComponentInChildren<ParticleSystem>().Play();
                 Destroy(other.gameObject, 1.5f);
@@ -45,6 +46,7 @@ public class DestroyCollider : MonoBehaviour
             }
             else
             {
+                other.gameObject.GetComponent<SphereCollider>().enabled = false;
                 other.transform.GetComponent<MeshRenderer>().enabled = false;
                 other.transform.GetComponentInChildren<ParticleSystem>().Play();
                 Destroy(other.gameObject, 1.5f);
