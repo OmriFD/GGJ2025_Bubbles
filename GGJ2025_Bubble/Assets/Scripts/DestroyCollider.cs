@@ -21,6 +21,22 @@ public class DestroyCollider : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bubble") || other.gameObject.CompareTag("Ring"))
         {
+            if (other.gameObject.CompareTag("Ring"))
+            {
+                Destroy(other.transform.parent.gameObject);
+            }
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bubble") || other.CompareTag("Ring"))
+        {
+            if (other.CompareTag("Ring"))
+            {
+                Destroy(other.transform.parent.gameObject);
+            }
             Destroy(other.gameObject);
         }
     }
