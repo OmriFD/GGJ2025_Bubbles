@@ -5,13 +5,19 @@ using UnityEngine;
 
 public class ScoreHandler : MonoBehaviour
 {
-    private TMP_Text score;
+    [SerializeField] private TMP_Text score;
+    [SerializeField] private TMP_Text finalScore;
+    
     private int currentScore;
     
     // Start is called before the first frame update
     void Start()
     {
-        score = GetComponent<TMP_Text>();
+StartGame();
+    }
+
+    public void StartGame()
+    {
         currentScore = 0;
         score.text = currentScore.ToString();
     }
@@ -26,5 +32,10 @@ public class ScoreHandler : MonoBehaviour
     {
         currentScore += scoreAddition;
         score.text = currentScore.ToString();
+    }
+
+    public void ShowFinalScore()
+    {
+        finalScore.text = currentScore.ToString();
     }
 }

@@ -20,16 +20,20 @@ public class RingsSpawner : MonoBehaviour
     private float currentScale;
     private float currentVelocity;
     private GameObject currentRing;
+    private SoapMeterHandler soapMeterHandler;
     
     // Start is called before the first frame update
     void Start()
     {
         timeBeforeNextRing = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+        soapMeterHandler = FindObjectOfType<SoapMeterHandler>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!soapMeterHandler.HasSoap()) return;
+        
         if (timeBeforeNextRing < 0)
         {
             currentScale = Random.Range(minRingScale, maxRingScale);
@@ -46,7 +50,9 @@ public class RingsSpawner : MonoBehaviour
                 currentRing.transform.localScale = new Vector3(currentScale, currentScale, currentScale);
                 currentRing.GetComponent<Rigidbody>().velocity = new Vector3(-currentVelocity, 0, 0);
             }
-            timeBeforeNextRing=Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+
+            //timeBeforeNextRing = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+            timeBeforeNextRing = Mathf.Abs(transform.position.x) * 2 / currentVelocity;
         }
 
         timeBeforeNextRing -= Time.deltaTime;

@@ -34,6 +34,8 @@ public class FingerPressHandler : MonoBehaviour
 
     void Update()
     {
+        if(!soapMeterHandler.HasSoap()) return;
+        
         if (isMobileVersion)
         {
             // Check if there's at least one touch
