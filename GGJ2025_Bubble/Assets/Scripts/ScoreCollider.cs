@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ScoreCollider : MonoBehaviour
 {
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Bubble")) return;
         
