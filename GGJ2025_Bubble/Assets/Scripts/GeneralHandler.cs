@@ -31,4 +31,9 @@ public class GeneralHandler : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Play()
+    {
+        
+    }
 }
