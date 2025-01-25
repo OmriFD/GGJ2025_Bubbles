@@ -18,7 +18,7 @@ public class FingerPressHandler : MonoBehaviour
     [SerializeField] private float amountToEnlargeBy;
     [SerializeField] private float bubbleSpeed;
     [SerializeField] private float bubbleMaxSize;
-    [SerializeField] private ParticleSystem bubblePopEffect;
+    //[SerializeField] private ParticleSystem bubblePopEffect;
 
     [Header("Soap Meter Info")] 
     [SerializeField] private float soapCostPerSecond;
@@ -102,6 +102,7 @@ public class FingerPressHandler : MonoBehaviour
     private void CreateNewBubble()
     {
         currentBubble = Instantiate(bubblePrefab, placeToSpawn.position, Quaternion.identity).GetComponent<Rigidbody>();
+        //currentBubble.velocity = new Vector3(0, 0, 0);
         float startingScale = Random.Range(minStartScale, maxStartScale);
         currentBubble.transform.localScale = new Vector3(startingScale, startingScale, startingScale);
         currentSoapCost = startBubbleCost;
@@ -130,10 +131,15 @@ public class FingerPressHandler : MonoBehaviour
     // Called when the finger is released
     private void OnFingerReleased()
     {
-        if (currentBubble != null) 
+        if (currentBubble != null)
+        {
+            currentBubble.isKinematic = false;
             currentBubble.velocity = new Vector3(0, bubbleSpeed, 0);
+            soapMeterHandler.DecreaseSlider(currentSoapCost);
+        }
+
         currentBubble = null;
-        soapMeterHandler.DecreaseSlider(currentSoapCost);
+        
         currentSoapCost = 0;
     }
 }
