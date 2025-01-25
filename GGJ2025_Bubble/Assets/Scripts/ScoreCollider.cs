@@ -11,11 +11,11 @@ public class ScoreCollider : MonoBehaviour
         
         if (transform.parent.transform.localScale.x < 65)
         {
-            FindObjectOfType<ScoreHandler>().IncreaseScore((int)other.transform.localScale.x * 100 + 65);
+            FindObjectOfType<ScoreHandler>().IncreaseScore((int)(other.transform.localScale.x * 100) + 65);
         }
         else
         {
-            FindObjectOfType<ScoreHandler>().IncreaseScore((int)other.transform.localScale.x * 100);
+            FindObjectOfType<ScoreHandler>().IncreaseScore((int)(other.transform.localScale.x * 100));
         }
     }
 }
