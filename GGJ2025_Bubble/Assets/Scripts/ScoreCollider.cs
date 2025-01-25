@@ -5,23 +5,17 @@ using UnityEngine;
 
 public class ScoreCollider : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Bubble"))
+        if (!other.CompareTag("Bubble")) return;
+        
+        if (transform.parent.transform.localScale.x < 65)
         {
-            FindObjectOfType<ScoreHandler>().IncreaseScore((int)transform.parent.localScale.x);
+            FindObjectOfType<ScoreHandler>().IncreaseScore((int)other.transform.localScale.x * 100 + 65);
+        }
+        else
+        {
+            FindObjectOfType<ScoreHandler>().IncreaseScore((int)other.transform.localScale.x * 100);
         }
     }
 }
